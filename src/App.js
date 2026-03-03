@@ -1,54 +1,59 @@
-// import logo from "./logo.svg";
 import "./App.css";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import TextForm from "./components/TextForm";
+import About from "./components/About";
+import { useState } from "react";
+import Alert from "./components/Alert";
 
 function App() {
+  const [modeState, setMode] = useState("light");
+  const [alert, setAlert] = useState(null);
+
+  const showAlert = (message, type) => {
+    setAlert({ msg: message, type: type });
+    setTimeout(() => {
+      setAlert(null);
+    }, 1500);
+  };
+
+  const toggleMode = (theme) => {
+    setMode(theme);
+
+    const backgrounds = {
+      light: "#ffffff",
+      dark: "#101213",
+      pink: "#a4135c",
+      blue: "#0b3d91",
+      green: "#023e17",
+    };
+
+    document.body.style.backgroundColor = backgrounds[theme];
+    document.title = `TextUtils - ${theme} Mode`;
+    showAlert(`${theme} mode has been enabled`, "success");
+  };
+
   return (
-    <>
-      <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="/">
-            TextUtils
-          </a>
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              
-              <li class="nav-item">
-                <a class="nav-link" href="/">
-                  Home
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/">
-                  About
-                </a>
-              </li>
-            </ul>
-            <form class="d-flex" role="search">
-              <input
-                class="form-control me-2"
-                type="search"
-                placeholder="Search"
-                aria-label="Search"
-              />
-              <button class="btn btn-outline-success" type="submit">
-                Search
-              </button>
-            </form>
-          </div>
-        </div>
-      </nav>
-    </>
+    <Router>
+      <Navbar
+        title="First React App"
+        mode={modeState}
+        toggleMode={toggleMode}
+      />
+
+      <Alert alert={alert} />
+
+      <Routes>
+        <Route
+          exact path="/"
+          element={
+            <TextForm heading="Log IN" showAlert={showAlert} mode={modeState} />
+          }
+        />
+
+        <Route exact path="/about" element={<About mode={modeState} />} />
+      </Routes>
+    </Router>
   );
 }
 
