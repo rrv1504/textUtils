@@ -1,5 +1,5 @@
 import "./App.css";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import TextForm from "./components/TextForm";
 import About from "./components/About";
@@ -19,17 +19,8 @@ function App() {
 
   const toggleMode = (theme) => {
     setMode(theme);
-
-    const backgrounds = {
-      light: "#ffffff",
-      dark: "#101213",
-      pink: "#a4135c",
-      blue: "#0b3d91",
-      green: "#023e17",
-    };
-
-    document.body.style.backgroundColor = backgrounds[theme];
     document.title = `TextUtils - ${theme} Mode`;
+    document.body.className = theme;
     showAlert(`${theme} mode has been enabled`, "success");
   };
 
@@ -45,13 +36,12 @@ function App() {
 
       <Routes>
         <Route
-          exact path="/"
+          path="/"
           element={
             <TextForm heading="Log IN" showAlert={showAlert} mode={modeState} />
           }
         />
-
-        <Route exact path="/about" element={<About mode={modeState} />} />
+        <Route path="/about" element={<About mode={modeState} />} />
       </Routes>
     </Router>
   );

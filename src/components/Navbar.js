@@ -1,14 +1,13 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
 function Navbar({ title, mode, toggleMode }) {
   const navbarThemes = {
-    light: "#f8f9fa",
-    dark: "#1f1f1f",
-    pink: "#800f4f",
-    blue: "#1d3557",
-    green: "#2d6a4f",
+    light: "linear-gradient(90deg, #ffffff, #e9ecef)",
+    dark: "linear-gradient(90deg, #141e30, #243b55)",
+    pink: "linear-gradient(90deg, #ff4e9b, #a4135c)",
+    blue: "linear-gradient(90deg, #1e3c72, #2a5298)",
+    green: "linear-gradient(90deg, #134e5e, #71b280)",
   };
 
   const navbarBackground = navbarThemes[mode];
@@ -19,12 +18,12 @@ function Navbar({ title, mode, toggleMode }) {
         mode === "light" ? "navbar-light" : "navbar-dark"
       }`}
       style={{
-        backgroundColor: navbarBackground,
-        transition: "all 0.3s ease",
+        background: navbarBackground,
+        transition: "all 0.4s ease",
       }}
     >
       <div className="container-fluid">
-        <Link className="navbar-brand" to="/">
+        <Link className="navbar-brand fw-bold" to="/">
           {title}
         </Link>
 
@@ -58,22 +57,31 @@ function Navbar({ title, mode, toggleMode }) {
                 className="nav-link dropdown-toggle"
                 data-bs-toggle="dropdown"
                 style={{
-                  color: mode === "light" ? "#000" : "#fff",
                   background: "none",
                   border: "none",
+                  color: mode === "light" ? "#000" : "#fff",
                 }}
               >
                 Change Theme
               </button>
 
-              <ul className="dropdown-menu dropdown-menu-dark">
+              <ul
+                className={`dropdown-menu ${
+                  mode === "light"
+                    ? "dropdown-menu-light"
+                    : "dropdown-menu-dark"
+                }`}
+              >
                 {["light", "pink", "blue", "green", "dark"].map((theme) => (
                   <li key={theme}>
                     <button
-                      className="dropdown-item"
+                      className={`dropdown-item ${
+                        mode === theme ? "active fw-bold" : ""
+                      }`}
                       onClick={() => toggleMode(theme)}
                     >
                       {theme.charAt(0).toUpperCase() + theme.slice(1)}
+                      {mode === theme && " ✓"}
                     </button>
                   </li>
                 ))}
@@ -85,11 +93,5 @@ function Navbar({ title, mode, toggleMode }) {
     </nav>
   );
 }
-
-Navbar.propTypes = {
-  title: PropTypes.string,
-  mode: PropTypes.string,
-  toggleMode: PropTypes.func,
-};
 
 export default Navbar;

@@ -1,19 +1,36 @@
 import React from "react";
 
-function Alert(props) {
+function Alert({ alert }) {
+  if (!alert) return null;
+
   return (
-    props.alert && (
+    <div
+      className="container mt-3"
+      style={{
+        position: "fixed",
+        top: "70px",
+        left: "50%",
+        transform: "translateX(-50%)",
+        zIndex: "1050",
+        width: "90%",
+        maxWidth: "600px",
+      }}
+    >
       <div
-        className={`alert alert-${props.alert.type} alert-dismissible fade show`}
+        className={`alert alert-${alert.type} shadow`}
         role="alert"
+        style={{
+          borderRadius: "12px",
+          backdropFilter: "blur(10px)",
+          boxShadow: "0 8px 25px rgba(0,0,0,0.3)",
+        }}
       >
         <strong>
-          {props.alert.type.charAt(0).toUpperCase() + props.alert.type.slice(1)}
+          {alert.type.charAt(0).toUpperCase() + alert.type.slice(1)}
         </strong>{" "}
-        : {props.alert.msg}
-        
+        : {alert.msg}
       </div>
-    )
+    </div>
   );
 }
 
